@@ -7,7 +7,7 @@ def analizar_mercado(api, simbolo):
         es_crypto = simbolo.endswith("USD") and simbolo not in ["AAPL", "TSLA", "NVDA", "MSFT", "AMZN"]
 
         if es_crypto:
-            url = f"https://data.alpaca.markets/v1beta1/crypto/bars?symbols={simbolo}&timeframe=5Min&limit=50"
+            url = f"https://data.sandbox.alpaca.markets/v1beta1/crypto/bars?symbols={simbolo}&timeframe=5Min&limit=50"
             headers = {
                 "APCA-API-KEY-ID": api._key_id,
                 "APCA-API-SECRET-KEY": api._secret_key
