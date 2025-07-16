@@ -3,7 +3,8 @@ import requests
 
 def analizar_mercado(api, simbolo):
     try:
-        es_crypto = not simbolo.isalpha()
+        # Detectar si es cripto (por ejemplo BTCUSD, ETHUSD) y no es una acción
+        es_crypto = simbolo.endswith("USD") and simbolo not in ["AAPL", "TSLA", "NVDA", "MSFT", "AMZN"]
 
         if es_crypto:
             url = f"https://data.alpaca.markets/v1beta1/crypto/bars?symbols={simbolo}&timeframe=5Min&limit=50"
