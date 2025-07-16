@@ -21,24 +21,23 @@ def ejecutar_bot():
             print(f"[{reloj}] ⏳ Analizando mercado...")
             for simbolo in SIMBOLOS:
                 resultado = analizar_mercado(api, simbolo)
-                if resultado == "COMPRA":
+                if resultado in ["COMPRA", "VENTA"]:
+                    lado = 'buy' if resultado == "COMPRA" else 'sell'
+                    precio_actual = api.get_last_trade(simbolo).price
+                    stop_loss = round(precio_actual * 0.99, 2) if lado == 'buy' else round(precio_actual * 1.01, 2)
+                    take_profit = round(precio_actual * 1.02, 2) if lado == 'buy' else round(precio_actual * 0.98, 2)
+
                     api.submit_order(
                         symbol=simbolo,
-                        qty=1,
-                        side='buy',
+                        notional=MONTO,
+                        side=lado,
                         type='market',
-                        time_in_force='day'
+                        time_in_force='gtc',
+                        order_class='bracket',
+                        take_profit={'limit_price': take_profit},
+                        stop_loss={'stop_price': stop_loss}
                     )
-                    print(f"[{reloj}] ✅ COMPRA ejecutada en {simbolo}")
-                elif resultado == "VENTA":
-                    api.submit_order(
-                        symbol=simbolo,
-                        qty=1,
-                        side='sell',
-                        type='market',
-                        time_in_force='day'
-                    )
-                    print(f"[{reloj}] ✅ VENTA ejecutada en {simbolo}")
+                    print(f"[{reloj}] ✅ {resultado} ejecutada en {simbolo} | TP: {take_profit} | SL: {stop_loss}")
                 else:
                     print(f"[{reloj}] 🔍 Sin oportunidad en {simbolo}")
             time.sleep(60)
