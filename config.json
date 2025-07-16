@@ -1,0 +1,13 @@
+{
+    "API_KEY": "S5IbKBZ483iC7naFC5pkTOWDumIXJu0jlePB6VfS",
+    "SECRET_KEY": "PK55AMI6JSBOCECOOIHA",
+    "BASE_URL": "https://paper-api.alpaca.markets",
+    "SYMBOLS": [
+        "AAPL",
+        "TSLA",
+        "NVDA",
+        "BTC/USD",
+        "ETH/USD"
+    ],
+    "MONTO": 5
+}
