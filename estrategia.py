@@ -17,7 +17,7 @@ def analizar_mercado(api, simbolo):
                 print(f"❌ Error al obtener datos de {simbolo}: {response.text}")
                 return "NO_ENTRADA"
             data = response.json()
-            barras = data.get(simbolo, [])
+            barras = next(iter(data.values()), [])
             if not barras:
                 return "NO_ENTRADA"
             df = pd.DataFrame(barras)
