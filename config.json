@@ -1,11 +1,14 @@
-
 {
     "API_KEY": "S5IbKBZ483iC7naFC5pkTOWDumIXJu0jlePB6VfS",
     "SECRET_KEY": "PK55AMI6JSBOCECOOIHA",
+    "BASE_URL": "https://paper-api.alpaca.markets",
+    "DATA_URL": "https://data.alpaca.markets",
     "SYMBOLS": [
-        "AAPL/USD",
-        "TSLA/USD",
-        "SPY/USD"
+        "AAPL",
+        "TSLA",
+        "SPY"
     ],
-    "MONTO": 1
+    "MONTO": 20,
+    "TAKE_PROFIT": 10.5,
+    "STOP_LOSS": 5.3
 }
