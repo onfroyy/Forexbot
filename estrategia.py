@@ -3,16 +3,10 @@ import requests
 
 def analizar_mercado(api, simbolo):
     try:
-        tipo = "stocks"
-        if "/" in simbolo:
-            tipo = "crypto"
+        es_crypto = not simbolo.isalpha()
 
-        if tipo == "stocks":
-            df = api.get_bars(simbolo, '5Min', limit=50).df
-            df = df[df['symbol'] == simbolo]
-        else:
-            # Para cripto usamos la API REST directamente (por ahora)
-            url = f"https://data.alpaca.markets/v1beta1/crypto/bars?symbols={simbolo.replace('/', '')}&timeframe=5Min&limit=50"
+        if es_crypto:
+            url = f"https://data.alpaca.markets/v1beta1/crypto/bars?symbols={simbolo}&timeframe=5Min&limit=50"
             headers = {
                 "APCA-API-KEY-ID": api._key_id,
                 "APCA-API-SECRET-KEY": api._secret_key
@@ -22,12 +16,15 @@ def analizar_mercado(api, simbolo):
                 print(f"❌ Error al obtener datos de {simbolo}: {response.text}")
                 return "NO_ENTRADA"
             data = response.json()
-            bars = data.get(simbolo.replace('/', ''), [])
-            if not bars:
+            barras = data.get(simbolo, [])
+            if not barras:
                 return "NO_ENTRADA"
-            df = pd.DataFrame(bars)
+            df = pd.DataFrame(barras)
             df['close'] = df['c']
             df.index = pd.to_datetime(df['t'])
+        else:
+            df = api.get_bars(simbolo, '5Min', limit=50).df
+            df = df[df['symbol'] == simbolo]
 
         df['EMA200'] = df['close'].ewm(span=200).mean()
         df['RSI'] = calcular_rsi(df['close'])
